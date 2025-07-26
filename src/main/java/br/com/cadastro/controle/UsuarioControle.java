@@ -62,11 +62,22 @@ public class UsuarioControle {
 
     @DeleteMapping("/{id}")
     @Operation(summary = "Endpoint responsável por excluir usuarios pelo id.")
-    @ApiResponse(responseCode = "200",description = " sucesso",content = {
+    @ApiResponse(responseCode = "204",description = " sucesso",content = {
             @Content(mediaType = "application.json",schema = @Schema(implementation = ResponseEntity.class))
     })
     public ResponseEntity<UsuarioDTO> excluirUsuario(@PathVariable Long id){
         usuarioServico.excluir(id);
         return ResponseEntity.noContent().build();
     }
+
+    @PatchMapping
+    @Operation(summary = "Endpoint responsável por atualizar parcialmente.")
+    @ApiResponse(responseCode = "200",description = " sucesso",content = {
+            @Content(mediaType = "application.json",schema = @Schema(implementation = ResponseEntity.class))
+    })
+    public ResponseEntity<UsuarioDTO>atualizarParcial(@RequestBody UsuarioDTO usuarioDTO){
+        var atualizar = usuarioServico.atualizarParcial(usuarioDTO);
+        return ResponseEntity.status(HttpStatus.OK).body(atualizar);
+    }
+
 }

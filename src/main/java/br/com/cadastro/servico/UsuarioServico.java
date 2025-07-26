@@ -18,30 +18,38 @@ public class UsuarioServico {
     private final ConversorDTO conversorDTO;
 
     public UsuarioDTO cadastrarUsuario(UsuarioDTO usuarioDTO){
-        Usuario usuario = conversorDTO.entidadeParaDtO(usuarioDTO);
+        var usuario = conversorDTO.dtoParaEntidade(usuarioDTO);
         var salvarUsuario = usuarioRepositorio.save(usuario);
-        return conversorDTO.dtoParaEntidade(salvarUsuario);
+        return conversorDTO.entidadeParaDtO(salvarUsuario);
     }
 
     public List<UsuarioDTO> buscarUsuarios(){
-        return usuarioRepositorio.findAll().stream().map(conversorDTO::dtoParaEntidade).toList();
+        return usuarioRepositorio.findAll().stream().map(conversorDTO::entidadeParaDtO).toList();
     }
 
     public UsuarioDTO buscarPorId(Long id){
         var buscar = usuarioRepositorio.findById(id).orElseThrow(()->new UsuarioNaoEncontrado("Usuário não encontrado !"));
-        return conversorDTO.dtoParaEntidade(buscar);
+        return conversorDTO.entidadeParaDtO(buscar);
     }
 
     public UsuarioDTO atualizarUsuario(Long id,UsuarioDTO usuarioDTO){
-        Usuario usuario = conversorDTO.entidadeParaDtO(usuarioDTO);
+        Usuario usuario = conversorDTO.dtoParaEntidade(usuarioDTO);
         usuario.setId(id);
         var salvarUsuario = usuarioRepositorio.save(usuario);
-        return conversorDTO.dtoParaEntidade(salvarUsuario);
+        return conversorDTO.entidadeParaDtO(salvarUsuario);
     }
 
     public void excluir(Long id){
         buscarPorId(id);
         usuarioRepositorio.deleteById(id);
+    }
+
+    public UsuarioDTO atualizarParcial(UsuarioDTO usuarioDTO){
+        var atualizar = usuarioRepositorio.getReferenceById(usuarioDTO.getId());
+        atualizar.atualizando(usuarioDTO);
+        var atualizando =  usuarioRepositorio.save(atualizar);
+        return conversorDTO.entidadeParaDtO(atualizando);
+
     }
 
 }

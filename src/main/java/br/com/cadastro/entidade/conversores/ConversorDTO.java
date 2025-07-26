@@ -7,7 +7,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class ConversorDTO {
 
-    public Usuario entidadeParaDtO(UsuarioDTO usuarioDTO){
+    public Usuario dtoParaEntidade(UsuarioDTO usuarioDTO){
         var usuario = new Usuario();
         usuario.setId(usuarioDTO.getId());
         usuario.setNome(usuarioDTO.getNome());
@@ -17,13 +17,16 @@ public class ConversorDTO {
         return usuario;
     }
 
-    public UsuarioDTO dtoParaEntidade(Usuario usuario){
+    public UsuarioDTO entidadeParaDtO(Usuario usuario){
         var novoUsuario = new UsuarioDTO();
         novoUsuario.setId(usuario.getId());
         novoUsuario.setNome(usuario.getNome());
         novoUsuario.setTelefone(usuario.getTelefone());
         novoUsuario.setEmail(usuario.getEmail());
         novoUsuario.setSexo(usuario.getSexo());
+
         return novoUsuario;
     }
+
+
 }
